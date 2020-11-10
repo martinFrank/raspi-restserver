@@ -1,7 +1,9 @@
 ssh pi@192.168.0.65
+rm ~/raspi-restserver/raspi-restserver-0.0.1.jar
+rm ~/raspi-restserver/raspi-restserver.yml
 scp C:\Users\fmar\IdeaProjects\raspi-restserver\raspi-restserver.yml pi@192.168.0.65:~/raspi-restserver
 scp C:\Users\fmar\IdeaProjects\raspi-restserver\target\raspi-restserver-0.0.1.jar pi@192.168.0.65:~/raspi-restserver
-java -jar raspi-restserver-0.0.1.jar server raspi-restserver.yml
+java -jar ~/raspi-restserver/raspi-restserver-0.0.1.jar server ~/raspi-restserver/raspi-restserver.yml
 sudo systemctl stop motion
 http://192.168.0.65:8080/saying?name=testabc
 http://192.168.0.65:8080/toggle?name=testabc

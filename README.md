@@ -1,2 +1,2 @@
-# raspi-restserver
-restserver for the rasprry pi gpio
+# raspi-restServer
+restServer for the raspberry pi gpio
