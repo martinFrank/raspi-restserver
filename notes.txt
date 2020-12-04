@@ -3,7 +3,40 @@ rm ~/raspi-restserver/raspi-restserver-0.0.1.jar
 rm ~/raspi-restserver/raspi-restserver.yml
 scp C:\Users\fmar\IdeaProjects\raspi-restserver\raspi-restserver.yml pi@192.168.0.65:~/raspi-restserver
 scp C:\Users\fmar\IdeaProjects\raspi-restserver\target\raspi-restserver-0.0.1.jar pi@192.168.0.65:~/raspi-restserver
-java -jar ~/raspi-restserver/raspi-restserver-0.0.1.jar server ~/raspi-restserver/raspi-restserver.yml
+scp C:\Users\fmar\IdeaProjects\raspi-restserver\example.keystore pi@192.168.0.65:~/raspi-restserver
+sudo java -jar ~/raspi-restserver/raspi-restserver-0.0.1.jar server ~/raspi-restserver/raspi-restserver.yml
 sudo systemctl stop motion
-http://192.168.0.65:8080/saying?name=testabc
-http://192.168.0.65:8080/toggle?name=testabc
+http://192.168.0.65:8080/saying?name=123
+http://192.168.0.65:8080/toggle?name=123
+
+curl -k -d "value=0" -X GET https://192.168.0.65:8443/saying?name=helloHello
+curl -k -d "value=0" -X POST https://192.168.0.65:8443/toggle?name=20
+curl -k --header "Content-Type: application/json" --request POST --data '{"pwms":[{"pin":"PIN4","percent":"0.3"},{"pin":"PIN3","percent":"0.2"}]}' https://192.168.0.65:8443/pwm
+
+curl -k --header "Content-Type: application/json" --request POST --data '{"pin":"PIN3","percent":0.2}' https://192.168.0.65:8443/pwm
+
+
+{"pwms":[{"pin":"PIN14","percent":0.3},{"pin":"PIN13","percent":0.2}]}
+
+curl -k -H "Content-Type: application/json"  -H "Accept: application/json" --request POST --data {\"pwms\":[{\"pin\":\"PIN4\",\"percent\":\"0.3\"},{\"pin\":\"PIN3\",\"percent\":\"0.2\"}]} https://192.168.0.66:8443/pwm
+
+
+
+curl -k -H "Content-Type: application/json"  -H "Accept: application/json" --request POST --data {\"deviceControlCommands\":[{\"deviceName\":\"steering\",\"value\":\"-0.4\",\"unit\":\"PERCENT\"},{\"deviceName\":\"drive\",\"value\":\"0.6\",\"unit\":\"PERCENT\"}]} https://192.168.0.66:8443/devicecontrol
+
+curl -k -H "Content-Type: application/json"  -H "Accept: application/json" --request POST --data {\"deviceControlCommands\":[{\"deviceName\":\"steering\",\"value\":\"-0.4\",\"unit\":\"PERCENT\"}]} https://192.168.0.66:8443/devicecontrol
+
+curl -k -H "Content-Type: application/json"  -H "Accept: application/json" --request POST --data {\"deviceControlCommands\":[{\"deviceName\":\"steering\",\"value\":\"stop\"},{\"deviceName\":\"drive\",\"value\":\"1\",\"unit\":\"PERCENT\"}]} https://192.168.0.66:8443/devicecontrol
+curl -k -H "Content-Type: application/json"  -H "Accept: application/json" --request POST --data {\"deviceControlCommands\":[{\"deviceName\":\"steering\",\"value\":\"0\",\"unit\":\"STOP\"},{\"deviceName\":\"drive\",\"value\":\"1\",\"unit\":\"STOP\"}]} https://192.168.0.66:8443/devicecontrol
+curl -k -H "Content-Type: application/json"  -H "Accept: application/json" --request POST --data {\"deviceControlCommands\":[{\"deviceName\":\"steering\",\"value\":\"0\",\"unit\":\"PERCENT\"},{\"deviceName\":\"drive\",\"value\":\"0\",\"unit\":\"PERCENT\"}]} https://192.168.0.66:8443/devicecontrol
+
+curl -k -H "Content-Type: application/json"  -H "Accept: application/json" --request POST --data {\"deviceControlCommands\":[{\"deviceName\":\"drive\",\"value\":\"1\",\"unit\":\"PERCENT\"}]} https://192.168.0.66:8443/devicecontrol
+
+curl -k -H "Content-Type: application/json"  -H "Accept: application/json" --request POST --data {\"deviceControlCommands\":[{\"deviceName\":\"lights\",\"value\":\"1000\",\"unit\":\"PULSE_MILLIS\"}]} https://192.168.0.66:8443/devicecontrol
+curl -k -H "Content-Type: application/json"  -H "Accept: application/json" --request POST --data {\"deviceControlCommands\":[{\"deviceName\":\"lights\",\"value\":\"true\",\"unit\":\"BOOLEAN\"}]} https://192.168.0.66:8443/devicecontrol
+
+https://192.168.0.66:8443/configuration
+
+curl -k -H "Content-Type: application/json"  -H "Accept: application/json" --request POST --data {\"deviceControlCommands\":[{\"deviceName\":\"motor\",\"value\":\"-0.4\",\"unit\":\"PERCENT\"}]} https://192.168.0.66:8443/devicecontrol
+
+

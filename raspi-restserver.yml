@@ -1,2 +1,112 @@
-sayingTemplate: message template %s!
-defaultSayingName: myNameisPrince
+
+# Logging settings.
+logging:
+
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+#  level: DEBUG
+
+#  # Logger-specific levels.
+#  loggers:
+#
+#    # Overrides the level of com.example.dw.Thing and sets it to DEBUG.
+#    "com.example.dw.Thing": DEBUG
+#
+#    # Enables the SQL query log and redirect it to a separate file
+#    "org.hibernate.SQL":
+#      level: DEBUG
+#      # This line stops org.hibernate.SQL (or anything under it) from using the root logger
+#      additive: false
+#      appenders:
+#        - type: file
+#          currentLogFilename: ./logs/example-sql.log
+#          archivedLogFilenamePattern: ./logs/example-sql-%d.log.gz
+#          archivedFileCount: 5
+
+
+server:
+  #  softNofileLimit: 1000
+  #  hardNofileLimit: 1000
+  applicationConnectors:
+    - type: http
+      port: 8080
+    - type: https
+      port: 8443
+      keyStorePath: raspi-restserver/example.keystore
+      keyStorePassword: example
+    #this requires the alpn-boot library on the JVM's boot classpath
+    #- type: h2
+    #  port: 8445
+    #  keyStorePath: example.keystore
+    #  keyStorePassword: example
+  adminConnectors:
+    - type: http
+      port: 8081
+    - type: https
+      port: 8444
+      keyStorePath: raspi-restserver/example.keystore
+      keyStorePassword: example
+
+#generell Raspi PWM Setting
+pwmSetting:
+  softPwmRange: 200
+#  hardwarePwmClock: 192
+  hardwarePwmClock: 540
+  hardwarePwmRange: 2000
+  hardwarePwmMode: PWM_MODE_MS
+
+#connected devices (connected via GPIO)
+devices:
+  - name: steering
+    unit: PERCENT, STOP
+    notes: floating point values from -1.00 (inclusive) ... 1.00 (inclusive)
+    softServoConfiguration:
+      pin: GPIO 4
+      #min: 5
+      min: 8
+      #max:25
+      max: 21
+  - name: drive
+    unit: PERCENT, STOP
+    notes: floating point values from -1.00 (inclusive) ... 1.00 (inclusive)
+    softServoConfiguration:
+      pin: GPIO 5
+      min: 5
+      max: 25
+
+#  - name: drive
+#    unit: PERCENT, STOP
+#    notes: floating point values from -1.00 (inclusive) ... 1.00 (inclusive)
+#    hardwarePwmConfiguration:
+#      pin: GPIO 13
+#      min: 50
+#      max: 250
+
+  - name: lights
+    unit: BOOLEAN, PULSE_MILLIS
+    notes: true(case insensitive) or false(case insensitive)
+    digitalOutConfiguration:
+      pin: GPIO 6
+      mode: boolean
+#
+#  - name: indicator_left
+#    unit: BOOLEAN, PULSE_MILLIS
+#    notes: true(case insensitive) or false(case insensitive)
+#    digitalOutConfiguration:
+#      pin: GPIO 8
+#      mode: indicator
+
+  - name: motor
+    unit: PERCENT, STOP
+    notes: floating point values from -1.00 (inclusive) ... 1.00 (inclusive)
+    softServoConfiguration:
+      pin: GPIO 10
+      min: 0
+      max: 200
+
+  - name: direction
+    unit: BOOLEAN, PULSE_MILLIS
+    notes: true(case insensitive) or false(case insensitive)
+    digitalOutConfiguration:
+      pin: GPIO 11
+      mode: boolean
