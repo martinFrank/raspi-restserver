@@ -15,13 +15,15 @@ public abstract class PwmDevice extends BaseDevice{
     public final String pinName;
     public int pwmValue;
     public double pwmPercent;
+    public boolean isInverted;
 
-    public PwmDevice(String name, String unit, String notes, String pinName, int min, int max) {
+    public PwmDevice(String name, String unit, String notes, String pinName, int min, int max, boolean isInverted) {
         super(name, unit, notes);
         this.min = min;
         this.max = max;
         this.pinName = pinName;
         this.pinAddress = RaspiPin.getPinByName(pinName).getAddress();
+        this.isInverted = isInverted;
     }
 
     public int getPwmValue(double pwmPercent) {
@@ -45,6 +47,18 @@ public abstract class PwmDevice extends BaseDevice{
         } else {
             throw new IllegalArgumentException("unknown unit");
         }
+    }
+
+    public static int normalizePwmValue(double pwmPercent, int min, int max) {
+        if (pwmPercent > 1) {
+            pwmPercent = 1;
+        }
+        if (pwmPercent < -1) {
+            pwmPercent = -1;
+        }
+        double center = (max + min) / 2d;
+        double range = (max - min) / 2d;
+        return (int) (pwmPercent * range + center);
     }
 
     public abstract void setPwm(String value);

@@ -44,35 +44,63 @@ public class RaspiRestServerConfiguration extends Configuration {
         @JsonProperty
         public DigitalOutConfiguration digitalOutConfiguration;
 
+        @JsonProperty
+        public SoftMotorConfiguration softMotorConfiguration;
+
+        @JsonProperty
+        public SoftServoConfiguration hardwareServoConfiguration;
+
     }
 
-    public static class PinConfiguration {
+    public static class SoftServoConfiguration{
         @JsonProperty
         public String pin;
-    }
-
-    public static class SoftServoConfiguration extends PinConfiguration{
         @JsonProperty
         public int min;
         @JsonProperty
         public int max;
+        @JsonProperty
+        public boolean invert;
     }
 
-    public static class SoftMotorConfiguration extends PinConfiguration{
+    public static class HardwareServoConfiguration {
+        @JsonProperty
+        public String pin;
+        @JsonProperty
+        public int min;
+        @JsonProperty
+        public int max;
+        @JsonProperty
+        public boolean invert;
+    }
+
+    public static class SoftMotorConfiguration {
+        @JsonProperty
+        public String drivePin;
         @JsonProperty
         public String directionalPin;
+        @JsonProperty
+        public boolean invert;
     }
 
-    public static class HardwarePwmConfiguration extends PinConfiguration{
+    public static class HardwarePwmConfiguration {
+        @JsonProperty
+        public String pin;
         @JsonProperty
         public int min;
         @JsonProperty
         public int max;
+        @JsonProperty
+        public boolean invert;
     }
 
-    public static class DigitalOutConfiguration extends PinConfiguration{
+    public static class DigitalOutConfiguration {
         @JsonProperty
-        public String mode;
+        public String pin;
+        @JsonProperty
+        public boolean invert;
     }
+
+
 
 }

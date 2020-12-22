@@ -1,5 +1,6 @@
 package com.github.martinfrank.raspi.restserver.model;
 
+import com.github.martinfrank.raspi.restserver.RaspiController;
 import com.github.martinfrank.raspi.restserver.RaspiRestServerConfiguration;
 import com.github.martinfrank.raspi.restserver.api.DeviceControlCommand;
 import com.pi4j.io.gpio.GpioController;
@@ -11,18 +12,21 @@ import java.util.concurrent.TimeUnit;
 public class DigitalOutDevice extends BaseDevice{
 
     private final GpioPinDigitalOutput outputPin;
+    private boolean isInverted;
 
-    public DigitalOutDevice(String name, String unit, String notes, GpioPinDigitalOutput outputPin) {
+    public DigitalOutDevice(String name, String unit, String notes, GpioPinDigitalOutput outputPin, boolean isInverted) {
         super(name, unit, notes);
         this.outputPin = outputPin;
+        this.isInverted = isInverted;
     }
 
-    public DigitalOutDevice(RaspiRestServerConfiguration.DeviceConfiguration deviceConfiguration, GpioController controller) {
+    public DigitalOutDevice(RaspiRestServerConfiguration.DeviceConfiguration deviceConfiguration, RaspiController controller) {
         this(deviceConfiguration.name,
                 deviceConfiguration.unit,
                 deviceConfiguration.notes,
-                controller.provisionDigitalOutputPin(
-                        RaspiPin.getPinByName(deviceConfiguration.digitalOutConfiguration.pin)));
+                controller.getGpioController().provisionDigitalOutputPin(
+                        RaspiPin.getPinByName(deviceConfiguration.digitalOutConfiguration.pin)),
+                deviceConfiguration.digitalOutConfiguration.invert);
     }
 
     @Override
@@ -41,7 +45,7 @@ public class DigitalOutDevice extends BaseDevice{
     }
 
     private void setOutput(String value) {
-        boolean state = Boolean.parseBoolean(value);
+        boolean state = isInverted ^ Boolean.parseBoolean(value);
         outputPin.setState(state);
     }
 

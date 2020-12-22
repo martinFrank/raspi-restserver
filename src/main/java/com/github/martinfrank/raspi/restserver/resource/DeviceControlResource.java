@@ -37,12 +37,10 @@ public class DeviceControlResource {
     @POST
     @Timed
     public ConfirmationSummary acceptControlCommand(DeviceControlCommands commands) {
-        LOGGER.info("commands: " + commands);
         List<Confirmation> confirmations = new ArrayList<>();
         for (DeviceControlCommand command : commands.deviceControlCommands) {
             try {
                 Device device = devices.getDevice(command.deviceName);
-                LOGGER.info("device: " + device);
                 device.set(command.value, command.unit);
                 confirmations.add(responseGenerator.success(command));
             }catch (Exception e){

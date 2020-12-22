@@ -9,6 +9,11 @@ sudo systemctl stop motion
 http://192.168.0.65:8080/saying?name=123
 http://192.168.0.65:8080/toggle?name=123
 
+
+https://github.com/Pi4J/pi4j/blob/master/pi4j-example/src/main/java/PCA9685GpioExample.java
+
+
+
 curl -k -d "value=0" -X GET https://192.168.0.65:8443/saying?name=helloHello
 curl -k -d "value=0" -X POST https://192.168.0.65:8443/toggle?name=20
 curl -k --header "Content-Type: application/json" --request POST --data '{"pwms":[{"pin":"PIN4","percent":"0.3"},{"pin":"PIN3","percent":"0.2"}]}' https://192.168.0.65:8443/pwm

@@ -11,8 +11,8 @@ public class SoftServoDevice extends PwmDevice {
     public static final int SOFT_PWM_RANGE = 200;
 
 
-    public SoftServoDevice(String name, String unit, String notes, String pinName, int min, int max) {
-        super(name, unit, notes, pinName, min, max);
+    public SoftServoDevice(String name, String unit, String notes, String pinName, int min, int max, boolean isInverted) {
+        super(name, unit, notes, pinName, min, max, isInverted);
         SoftPwm.softPwmCreate(pinAddress, 0, 200);
     }
 
@@ -22,12 +22,14 @@ public class SoftServoDevice extends PwmDevice {
                 deviceConfiguration.notes,
                 deviceConfiguration.softServoConfiguration.pin,
                 deviceConfiguration.softServoConfiguration.min,
-                deviceConfiguration.softServoConfiguration.max);
+                deviceConfiguration.softServoConfiguration.max,
+                deviceConfiguration.softServoConfiguration.invert);
     }
 
     @Override
     public void setPwm(String value) {
         pwmPercent = Double.parseDouble(value);
+        pwmPercent = isInverted ? pwmPercent * -1d : pwmPercent;
         pwmValue = getPwmValue(pwmPercent);
         SoftPwm.softPwmWrite(pinAddress, pwmValue);
         LOGGER.info("PWM Pin:" + pinName + " value:" + pwmValue + "/" + SOFT_PWM_RANGE);

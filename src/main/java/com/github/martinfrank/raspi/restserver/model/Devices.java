@@ -1,5 +1,6 @@
 package com.github.martinfrank.raspi.restserver.model;
 
+import com.github.martinfrank.raspi.restserver.RaspiController;
 import com.github.martinfrank.raspi.restserver.RaspiRestServerConfiguration;
 import com.pi4j.io.gpio.GpioController;
 import org.slf4j.Logger;
@@ -14,28 +15,24 @@ public class Devices {
 
     public List<Device> devices = new ArrayList<>();
 
-    public Devices(RaspiRestServerConfiguration configuration, GpioController controller) {
-        LOGGER.debug("-----------"+configuration.devices);
+    public Devices(RaspiRestServerConfiguration configuration, RaspiController controller) {
         for (RaspiRestServerConfiguration.DeviceConfiguration deviceConfiguration: configuration.devices){
             if (deviceConfiguration.hardwarePwmConfiguration != null){
                 devices.add(new HardwarePwmDevice(deviceConfiguration));
             }
             if (deviceConfiguration.softServoConfiguration != null){
-                LOGGER.debug("deviceConfiguration.name"+deviceConfiguration.name);
-                LOGGER.debug("deviceConfiguration.notes"+deviceConfiguration.notes);
-                LOGGER.debug("deviceConfiguration.unit"+deviceConfiguration.unit);
-                LOGGER.debug("deviceConfiguration.softServoConfiguration.pin"+deviceConfiguration.softServoConfiguration.pin);
-                LOGGER.debug("deviceConfiguration.softServoConfiguration.min"+deviceConfiguration.softServoConfiguration.min);
-                LOGGER.debug("deviceConfiguration.softServoConfiguration.max"+deviceConfiguration.softServoConfiguration.max);
                 devices.add(new SoftServoDevice(deviceConfiguration));
             }
             if (deviceConfiguration.digitalOutConfiguration != null){
-                LOGGER.debug("deviceConfiguration"+deviceConfiguration);
-                LOGGER.debug("deviceConfiguration.digitalOutConfiguratio"+deviceConfiguration.digitalOutConfiguration);
                 devices.add(new DigitalOutDevice(deviceConfiguration, controller));
             }
+            if (deviceConfiguration.softMotorConfiguration != null){
+                devices.add(new SoftMotorDevice(deviceConfiguration, controller));
+            }
+            if (deviceConfiguration.hardwareServoConfiguration != null){
+                devices.add(new HardwareServoDevice(deviceConfiguration, controller));
+            }
         }
-        LOGGER.debug("-----------");
     }
 
 

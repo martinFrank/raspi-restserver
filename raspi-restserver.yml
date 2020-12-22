@@ -57,7 +57,7 @@ pwmSetting:
 
 #connected devices (connected via GPIO)
 devices:
-  - name: steering
+  - name: steering2
     unit: PERCENT, STOP
     notes: floating point values from -1.00 (inclusive) ... 1.00 (inclusive)
     softServoConfiguration:
@@ -66,14 +66,15 @@ devices:
       min: 8
       #max:25
       max: 21
-  - name: drive
+      invert: false
+  - name: test_drive
     unit: PERCENT, STOP
     notes: floating point values from -1.00 (inclusive) ... 1.00 (inclusive)
     softServoConfiguration:
       pin: GPIO 5
       min: 5
       max: 25
-
+      invert: false
 #  - name: drive
 #    unit: PERCENT, STOP
 #    notes: floating point values from -1.00 (inclusive) ... 1.00 (inclusive)
@@ -81,32 +82,38 @@ devices:
 #      pin: GPIO 13
 #      min: 50
 #      max: 250
-
   - name: lights
     unit: BOOLEAN, PULSE_MILLIS
     notes: true(case insensitive) or false(case insensitive)
     digitalOutConfiguration:
       pin: GPIO 6
-      mode: boolean
-#
+      invert: false
 #  - name: indicator_left
 #    unit: BOOLEAN, PULSE_MILLIS
 #    notes: true(case insensitive) or false(case insensitive)
-#    digitalOutConfiguration:
+#    digitalBlinkConfiguration:
 #      pin: GPIO 8
-#      mode: indicator
-
-  - name: motor
+  - name: drive
     unit: PERCENT, STOP
     notes: floating point values from -1.00 (inclusive) ... 1.00 (inclusive)
-    softServoConfiguration:
-      pin: GPIO 10
-      min: 0
-      max: 200
-
-  - name: direction
-    unit: BOOLEAN, PULSE_MILLIS
-    notes: true(case insensitive) or false(case insensitive)
-    digitalOutConfiguration:
-      pin: GPIO 11
-      mode: boolean
+    softMotorConfiguration:
+      drivePin: GPIO 10
+      directionalPin: GPIO 11
+      invert: false
+  - name: motor_b
+    unit: PERCENT, STOP
+    notes: floating point values from -1.00 (inclusive) ... 1.00 (inclusive)
+    softMotorConfiguration:
+      drivePin: GPIO 28
+      directionalPin: GPIO 29
+      invert: false
+  - name: steering
+    unit: PERCENT, STOP
+    notes: floating point values from -1.00 (inclusive) ... 1.00 (inclusive)
+    hardwareServoConfiguration:
+      pin: PWM 1
+      #min: 5
+      min: 900
+      #max:25
+      max: 2100
+      invert: false

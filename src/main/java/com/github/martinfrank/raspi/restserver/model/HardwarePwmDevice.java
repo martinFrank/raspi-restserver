@@ -1,10 +1,7 @@
 package com.github.martinfrank.raspi.restserver.model;
 
 import com.github.martinfrank.raspi.restserver.RaspiRestServerConfiguration;
-import com.github.martinfrank.raspi.restserver.api.DeviceControlCommand;
-import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.wiringpi.Gpio;
-import com.pi4j.wiringpi.SoftPwm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,8 +11,8 @@ public class HardwarePwmDevice extends PwmDevice{
 
     private  final int hardwarePwmRange = 2000;
 
-    public HardwarePwmDevice(String name, String unit, String notes, String pinName, int min, int max) {
-        super(name, unit, notes, pinName, min, max);
+    public HardwarePwmDevice(String name, String unit, String notes, String pinName, int min, int max, boolean isInverted) {
+        super(name, unit, notes, pinName, min, max, isInverted);
     }
 
     public HardwarePwmDevice(RaspiRestServerConfiguration.DeviceConfiguration deviceConfiguration) {
@@ -24,7 +21,8 @@ public class HardwarePwmDevice extends PwmDevice{
                 deviceConfiguration.notes,
                 deviceConfiguration.hardwarePwmConfiguration.pin,
                 deviceConfiguration.hardwarePwmConfiguration.min,
-                deviceConfiguration.hardwarePwmConfiguration.max);
+                deviceConfiguration.hardwarePwmConfiguration.max,
+                deviceConfiguration.hardwarePwmConfiguration.invert);
     }
 
     @Override
